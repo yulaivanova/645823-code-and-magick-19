@@ -47,12 +47,6 @@ var onSubmitButtonClick = function () {
 
 var onFormSubmit = function () {
   submitButton.addEventListener('click', onSubmitButtonClick);
-
-  submitButton.addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_KEY) {
-      form.submit();
-    }
-  });
 };
 
 var onInputNameInvalid = function () {
@@ -69,44 +63,44 @@ var onPopupEscPress = function (evt) {
   }
 };
 
-var getRandomElementColor = function (color, element, elemetInput) {
+var setRandomElementColor = function (color, element, elemetInput) {
   var randomElement = getRandomElements(color);
-  element.style.fill = randomElement;
-  elemetInput.setAttribute('value', randomElement);
+  element.style.method = randomElement;
+  elemetInput.value = randomElement;
 };
 
 var onEyesClick = function () {
-  getRandomElementColor(eyesColor, wizardEyes, wizardEyesInput);
+  setRandomElementColor(eyesColor, wizardEyes, wizardEyesInput);
 };
 
 var onCoatClick = function () {
-  getRandomElementColor(clothesColors, wizardCoat, wizardCoatInput);
+  setRandomElementColor(clothesColors, wizardCoat, wizardCoatInput);
 };
 
 var onFirebollClick = function () {
   var randomColorFireboll = getRandomElements(firebollColor);
-  wizardFireboll.setAttribute('style', 'background: ' + randomColorFireboll);
-  firebollInput.setAttribute('value', randomColorFireboll);
+  wizardFireboll.style.backgroundColor = randomColorFireboll;
+  firebollInput.value = randomColorFireboll;
+};
+
+var setupPopup = function (state) {
+  var method = state ? 'addEventListener' : 'removeEventListener';
+  document[method]('keydown', onPopupEscPress);
+  inputName[method]('invalid', onInputNameInvalid);
+  wizardCoat[method]('click', onCoatClick);
+  wizardFireboll[method]('click', onFirebollClick);
+  wizardEyes[method]('click', onEyesClick);
+  form[method]('submit', onFormSubmit);
 };
 
 var openPopup = function () {
   userDialog.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
-  inputName.addEventListener('invalid', onInputNameInvalid);
-  wizardCoat.addEventListener('click', onCoatClick);
-  wizardFireboll.addEventListener('click', onFirebollClick);
-  wizardEyes.addEventListener('click', onEyesClick);
-  form.addEventListener('submit', onFormSubmit);
+  setupPopup(true);
 };
 
 var closePopup = function () {
   userDialog.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
-  inputName.removeEventListener('invalid', onInputNameInvalid);
-  wizardCoat.removeEventListener('click', onCoatClick);
-  wizardFireboll.removeEventListener('click', onFirebollClick);
-  wizardEyes.removeEventListener('click', onEyesClick);
-  form.removeEventListener('submit', onFormSubmit);
+  setupPopup(false);
 };
 
 userDialogOpen.addEventListener('click', function () {
