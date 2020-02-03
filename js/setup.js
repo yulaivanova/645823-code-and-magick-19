@@ -63,24 +63,22 @@ var onPopupEscPress = function (evt) {
   }
 };
 
-var setRandomElementColor = function (color, element, elemetInput) {
+var setRandomElementColor = function (color, element, method, elemetInput) {
   var randomElement = getRandomElements(color);
-  element.style.method = randomElement;
+  element.style[method] = randomElement;
   elemetInput.value = randomElement;
 };
 
 var onEyesClick = function () {
-  setRandomElementColor(eyesColor, wizardEyes, wizardEyesInput);
+  setRandomElementColor(eyesColor, wizardEyes, 'fill', wizardEyesInput);
 };
 
 var onCoatClick = function () {
-  setRandomElementColor(clothesColors, wizardCoat, wizardCoatInput);
+  setRandomElementColor(clothesColors, wizardCoat, 'fill', wizardCoatInput);
 };
 
 var onFirebollClick = function () {
-  var randomColorFireboll = getRandomElements(firebollColor);
-  wizardFireboll.style.backgroundColor = randomColorFireboll;
-  firebollInput.value = randomColorFireboll;
+  setRandomElementColor(firebollColor, wizardFireboll, 'backgroundColor', firebollInput);
 };
 
 var setupPopup = function (state) {
