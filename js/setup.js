@@ -1,7 +1,17 @@
 'use strict';
 
+var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+var WIZARD_QUANTITY = 4;
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+var userDialogOpen = document.querySelector('.setup-open');
+var userDialogClose = userDialog.querySelector('.setup-close');
 
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 
@@ -9,26 +19,115 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
     .content
     .querySelector('.setup-similar-item');
 
+var form = userDialog.querySelector('.setup-wizard-form');
+var inputName = form.querySelector('.setup-user-name');
+var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
+var wizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
+var wizardFireboll = userDialog.querySelector('.setup-fireball-wrap');
+var firebollInput = wizardFireboll.querySelector('input');
+var wizardEyesInput = form.querySelector('#eyes-color-input');
+var wizardCoatInput = form.querySelector('#coat-color-input');
 
-var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
-
-var getRandomArrayElement = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+var getRandomIntInclusive = function (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+var getRandomElements = function (elements) {
+  return elements[getRandomIntInclusive(0, elements.length - 1)];
+};
+
+var onInputNameInvalid = function () {
+  if (inputName.validity.tooShort) {
+    inputName.setCustomValidity('имя персонажа не может содержать менее 2 символов');
+  }
+};
+
+var onPopupEscPress = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closePopup();
+  }
+};
+
+inputName.addEventListener('keydown', function (evtInput) {
+  if (evtInput.code === ESC_KEY) {
+    evtInput.stopPropagation();
+  }
+});
+
+userDialogOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+
+var setRandomElementColor = function (colors, element, property, elemetInput) {
+  var randomElement = getRandomElements(colors);
+  element.style[property] = randomElement;
+  elemetInput.value = randomElement;
+};
+
+var onEyesClick = function () {
+  setRandomElementColor(EYES_COLORS, wizardEyes, 'fill', wizardEyesInput);
+};
+
+var onCoatClick = function () {
+  setRandomElementColor(COAT_COLORS, wizardCoat, 'fill', wizardCoatInput);
+};
+
+var onFirebollClick = function () {
+  setRandomElementColor(FIREBALL_COLORS, wizardFireboll, 'backgroundColor', firebollInput);
+};
+
+var setupPopup = function (state) {
+  var method = state ? 'addEventListener' : 'removeEventListener';
+  document[method]('keydown', onPopupEscPress);
+  inputName[method]('invalid', onInputNameInvalid);
+  wizardCoat[method]('click', onCoatClick);
+  wizardFireboll[method]('click', onFirebollClick);
+  wizardEyes[method]('click', onEyesClick);
+};
+
+var openPopup = function () {
+  userDialog.classList.remove('hidden');
+  setupPopup(true);
+};
+
+var closePopup = function () {
+  userDialog.classList.add('hidden');
+  setupPopup(false);
+};
+
+userDialogOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+userDialogOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    openPopup();
+  }
+});
+
+userDialogClose.addEventListener('click', function () {
+  closePopup();
+});
+
+userDialogClose.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    closePopup();
+  }
+});
 
 var createWizard = function () {
   var wizard = {};
-  wizard.name = getRandomArrayElement(WIZARD_NAMES);
-  wizard.surname = getRandomArrayElement(WIZARD_SURNAMES);
-  wizard.coatColor = getRandomArrayElement(COAT_COLORS);
-  wizard.eyesColor = getRandomArrayElement(EYES_COLORS);
+  wizard.name = getRandomElements(WIZARD_NAMES);
+  wizard.surname = getRandomElements(WIZARD_SURNAMES);
+  wizard.coatColor = getRandomElements(COAT_COLORS);
+  wizard.eyesColor = getRandomElements(EYES_COLORS);
   return wizard;
 };
 
-var createWizardsArray = function (quantity) {
+var createWizards = function (quantity) {
   var wizards = [];
   for (var i = 0; i < quantity; i++) {
     wizards.push(createWizard());
@@ -36,9 +135,9 @@ var createWizardsArray = function (quantity) {
   return wizards;
 };
 
-var wizards = createWizardsArray(4);
+var generatedWizards = createWizards(WIZARD_QUANTITY);
 
-var renderWizard = function (wizard) {
+var createWizardElement = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
 
   wizardElement.querySelector('.setup-similar-label').textContent = wizard.name + ' ' + wizard.surname;
@@ -48,11 +147,12 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < wizards.length; i++) {
-  fragment.appendChild(renderWizard(wizards[i]));
-}
-similarListElement.appendChild(fragment);
+var renderWizards = function (wizards) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < wizards.length; i++) {
+    fragment.appendChild(createWizardElement(wizards[i]));
+  }
+  similarListElement.appendChild(fragment);
+};
 
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
-
+renderWizards(generatedWizards);
