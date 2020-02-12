@@ -61,9 +61,9 @@
     var method = state ? 'addEventListener' : 'removeEventListener';
     document[method]('keydown', onPopupEscPress);
     inputName[method]('invalid', window.validation.onInputNameInvalid);
-    window.wizardElements.wizardCoat[method]('click', window.customization.onCoatClick);
-    window.wizardElements.wizardFireboll[method]('click', window.customization.onFirebollClick);
-    window.wizardElements.wizardEyes[method]('click', window.customization.onEyesClick);
+    window.wizardElements.coat[method]('click', window.customization.onCoatClick);
+    window.wizardElements.fireball[method]('click', window.customization.onFirebollClick);
+    window.wizardElements.eyes[method]('click', window.customization.onEyesClick);
   };
 
 })();

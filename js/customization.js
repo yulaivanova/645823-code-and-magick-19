@@ -2,20 +2,20 @@
 
 (function () {
   var userDialog = document.querySelector('.setup');
-  var firebollInput = window.wizardElements.wizardFireboll.querySelector('input');
+  var fireballInput = window.wizardElements.fireball.querySelector('input');
   var form = userDialog.querySelector('.setup-wizard-form');
   var wizardEyesInput = form.querySelector('#eyes-color-input');
   var wizardCoatInput = form.querySelector('#coat-color-input');
 
   window.customization = {
     onEyesClick: function () {
-      window.colorize(window.wizardElements.EYES_COLORS, window.wizardElements.wizardEyes, 'fill', wizardEyesInput);
+      window.colorize(window.wizardElements.EYES_COLORS, window.wizardElements.eyes, 'fill', wizardEyesInput);
     },
     onCoatClick: function () {
-      window.colorize(window.wizardElements.COAT_COLORS, window.wizardElements.wizardCoat, 'fill', wizardCoatInput);
+      window.colorize(window.wizardElements.COAT_COLORS, window.wizardElements.coat, 'fill', wizardCoatInput);
     },
     onFirebollClick: function () {
-      window.colorize(window.wizardElements.FIREBALL_COLORS, window.wizardElements.wizardFireboll, 'backgroundColor', firebollInput);
+      window.colorize(window.wizardElements.FIREBALL_COLORS, window.wizardElements.fireball, 'backgroundColor', fireballInput);
     },
   };
 
