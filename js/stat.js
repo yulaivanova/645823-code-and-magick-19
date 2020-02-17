@@ -59,7 +59,7 @@
   };
 
   var getRandomBlueColor = function (ctx) {
-    ctx.fillStyle = 'hsl(' + 230 + ', ' + window.randomization.getRandomIntInclusive(20, 100) + '%,  ' + window.randomization.getRandomIntInclusive(20, 80) + '%)';
+    ctx.fillStyle = 'hsl(' + 230 + ', ' + window.util.getRandomIntInclusive(20, 100) + '%,  ' + window.util.getRandomIntInclusive(20, 80) + '%)';
   };
 
   var renderBars = function (ctx, playersName, times) {

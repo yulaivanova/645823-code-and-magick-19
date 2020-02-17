@@ -64,6 +64,11 @@
     window.wizardElements.coat[method]('click', window.customization.onCoatClick);
     window.wizardElements.fireball[method]('click', window.customization.onFirebollClick);
     window.wizardElements.eyes[method]('click', window.customization.onEyesClick);
+    form[method]('submit', function (evt) {
+      window.backend.save(new FormData(form), closePopup, window.backend.errorHandler);
+      evt.preventDefault();
+    });
   };
+
 
 })();

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.randomization = {
+  window.util = {
     getRandomIntInclusive: function (min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
